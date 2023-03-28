@@ -14,7 +14,7 @@ function setMap() {
         .attr("width", width)
         .attr("height", height);
     
-    //create US-centric composite projection of three Albers equal area conic projections
+    //create US-centric composite projection of three Albers equal area conic projections...does the hard work of including AK and HI for me!
     var projection = d3.geoAlbersUsa();
     //Likely don't need commented out code below due to the composite projection being used...according to much reading about d3-geo on github
        // .center([95, 35]) //set the long and lat of center
@@ -39,15 +39,15 @@ function setMap() {
             usStates = data[1];
         
         //translate states TopoJSON to GeoJSON...use .features to access every state
-        var usStatesGeojson = topojson.feature(usStates, usStates.objects.US_States).features;
+        var usStatesJson = topojson.feature(usStates, usStates.objects.US_States).features;
     
         //add each state enumeration unit separately to map
         var states = map.append("path")
-            .data(usStatesGeojson)
+            .data(usStatesJson)
             .enter()
             .att("class", function(d){
                 return "states" + d.properties.diss_me; 
-            }) //generic class of states created, then assign unique class based on the diss_me attribute, which is found in both the csv data and json data
-        .attr("d", path); //draw region geometry....this isn't happening...why?
+            }) //generic class of states created, then assign unique class based on the diss_me attribute, which the key between the csv and json data
+        .attr("d", path); //draw state geometry....this isn't happening...why?
     }
 };
