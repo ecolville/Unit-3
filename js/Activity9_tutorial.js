@@ -19,7 +19,7 @@ function setMap() {
         .center([0, 46.2])
         .rotate([-2, 0, 0])
         .parallels([43, 62])
-        .scale(2500)
+        .scale(2500) 
         .translate([width / 2, height / 2]);
 
     var path = d3.geoPath().projection(projection);
@@ -39,22 +39,23 @@ function setMap() {
             france = data[2];
        
      //translate europe and France TopoJSON to GeoJSON
-    var europeCountries = topojson.feature(europe, europe.objects.EuropeCountries),
-        franceRegions = topojson.feature(france, france.objects.FranceRegions);
+        var europeCountries = topojson.feature(europe, europe.objects.EuropeCountries),
+            franceRegions = topojson.feature(france, france.objects.FranceRegions).features;
 
-     var graticule = d3.geoGraticule().step([5, 5]); //place graticule lines every 5 degrees of longitude and latitude
+     //place graticule lines every 5 degrees of longitude and latitude
+        var graticule = d3.geoGraticule().step([5, 5]); 
 
-        //create graticule background
+     //create graticule background
         var gratBackground = map.append("path")
-            .datum(graticule.outline()) //bind graticule background
-            .attr("class", "gratBackground") //assign class for styling
-            .attr("d", path); //project graticule
+          .datum(graticule.outline()) //bind graticule background
+          .attr("class", "gratBackground") //assign class for styling
+          .attr("d", path); //project graticule
 
-        //create graticule lines
+      //create graticule lines
         var gratLines = map.selectAll(".gratLines") //select graticule elements that will be created
             .data(graticule.lines()) //bind graticule lines to each element to be created
-            .enter() //create an element for each datum
-            .append("path") //append each element to the svg as a path element
+        .enter() //create an element for each datum
+         .append("path") //append each element to the svg as a path element
             .attr("class", "gratLines") //assign class for styling
             .attr("d", path); //project graticule lines
 
