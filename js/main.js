@@ -42,12 +42,13 @@ function setMap() {
         var usStatesJson = topojson.feature(usStates, usStates.objects.US_States).features;
     
         //add each state enumeration unit separately to map
-        var states = map.append("path")
+        var states = map.append(".states") //select states that will be created
             .data(usStatesJson)
             .enter()
-            .att("class", function(d){
+            .append("path")
+            .attr("class", function(d){
                 return "states" + d.properties.diss_me; 
-            }) //generic class of states created, then assign unique class based on the diss_me attribute, which the key between the csv and json data
+            }) //generic class of states created, then assign unique class based on the diss_me attribute, which is the key between the csv and json data
         .attr("d", path); //draw state geometry....this isn't happening...why?
     }
 };
