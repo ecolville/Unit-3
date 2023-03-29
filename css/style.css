@@ -5,6 +5,12 @@
     stroke-width: 2px;
 }
 
+.states {
+    fill: #fff;
+    stroke: #CCC;
+    stroke-width: 2px;
+}
+
 .gratLines {
     fill: none;
     stroke: #999;
@@ -19,8 +25,3 @@
     border: medium solid #999;
 }
 
-.states {
-    fill: #fff;
-    stroke: #CCC;
-    stroke-width: 2px;
-}

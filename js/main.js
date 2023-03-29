@@ -5,7 +5,7 @@ window.onload = setMap();
 function setMap() {
     //map frame dimensions
     var width = 960,
-        height = 460;
+        height = 500;
 
     //create new svg container for the map
     var map = d3.select("body")
