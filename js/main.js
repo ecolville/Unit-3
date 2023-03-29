@@ -42,7 +42,7 @@ function setMap() {
         var usStatesJson = topojson.feature(usStates, usStates.objects.US_States).features;
     
         //add each state enumeration unit separately to map
-        var states = map.append(".states") //select states that will be created
+        var states = map.selectAll(".states") //select states that will be created
             .data(usStatesJson)
             .enter()
             .append("path")
