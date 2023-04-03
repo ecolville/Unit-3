@@ -57,6 +57,8 @@
             }; //end of callback(data)
 	}; //end of setMap()
     
+    let centered, us
+    
     function joinData(usStatesJson, csvData){
        //loop through csv to assign each set of csv attribute values to geojson state 
             for (var i=0; i<csvData.length; i++){
@@ -127,7 +129,39 @@
         .style("opacity", 0)
     
     //add clickable background
-    svg.append("rect")
+    var background = map.append("rect")
         .attr("class", "background")
         .attr("width", innerWidth)
+        .attr("height", innerHeight)
+        .on("click", click)
+    
+    function read (error, topo){
+        var mouseOver = function(d){
+            d3.selectAll(".states")
+                .transition()
+                .duration(200)
+                .style("opacity", 0.5)
+                .style("stroke", "transparent");
+            d3.select(this)
+                .transition()
+                .duration(200)
+                .style("opacity", 1)
+                .style("stroke", "black");
+            tooltip.style("left", (d3.event.pageX + 15) + "px")
+                .style("top", (d3.event.pageY - 28) + "px")
+			    .transition().duration(400)
+                .style("opacity", 1)
+                .text(d.properties[expressed])
+	       }
+        
+        var mouseLeave = function (){
+            d3.selectAll(".states")
+                .transition()
+			    .duration(200)
+                .style("opacity", 1)
+                .style("stroke", "transparent");
+            tooltip.transition().duration(300)
+                .style("opacity", 0);
+	       }
+        };
 })(); 

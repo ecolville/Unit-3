@@ -158,7 +158,7 @@
             .enter()
             .append("rect")
             .sort(function(a, b){
-                return a[expressed] - b[expressed]
+                return parseFloat(a[expressed]) - parseFloat(b[expressed])
             })
             .attr("class", function(d){
                 return "bars " + d.diss_me;
@@ -174,16 +174,17 @@
                 return yScale(parseFloat(d[expressed])) + topBottomPadding;
             })
             .style("fill", function(d){
-                return colorScale(d[expressed]);
+                console.log("d",d);
+                return colorScale(parseFloat(d[expressed]));
             });
-        
+       
         //annotate bars with attribute value text
         var numbers = chart.selectAll(".numbers")
             .data(csvData)
             .enter()
             .append("text")
             .sort(function(a, b){
-                return a[expressed] - b[expressed]
+                return parseFloat(b[expressed]) - parseFloat(a[expressed])
             })
             .attr("class", function(d){
                 return "numbers " + d.diss_me;
