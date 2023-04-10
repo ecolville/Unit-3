@@ -17,7 +17,7 @@
     //create a scale to size bars proportionally to frame and for axis
         var yScale = d3.scaleLinear()
             .range([463, 0])
-            .domain([0, 100]);
+            .domain([0, 110]);
     
     //begin script when window loads
     window.onload = setMap();
@@ -101,7 +101,8 @@
 	            .attr("d", path) //project graticule
 
 	        //create graticule lines
-	        var gratLines = map.selectAll(".gratLines") //select graticule elements that will be created
+	        var gratLines = map
+                .selectAll(".gratLines") //select graticule elements that will be created
 	            .data(graticule.lines()) //bind graticule lines to each element to be created
 	            .enter() //create an element for each datum
 	            .append("path") //append each element to the svg as a path element
@@ -129,9 +130,9 @@
 	                        var val = parseFloat(csvRegion[attr]); //get csv attribute value
 	                        geojsonProps[attr] = val; //assign attribute and value to geojson properties
 	                    });
-	                };
-	            };
-	        };
+	                }
+	            }
+	        }
 	        return franceRegions;
 	};
     
@@ -148,14 +149,20 @@
             .style("fill", function(d){            
                 var value = d.properties[expressed];            
                 if(value) {                
-                    return colorScale(value);            
+                    return colorScale(d.properties[expressed]);            
                 } else {                
                     return "#ccc";            
                 }    
         })
         .on("mouseover", function(event, d){
             highlight(d.properties);
-        });
+        })
+         .on("mouseout", function (event, d) {
+                dehighlight(d.properties);
+            })
+         .on("mousemove", moveLabel);
+       
+        var desc = regions.append("desc").text('{"stroke": "#000", "stroke-width": "0.5px"}'); 
     }
     
     function makeColorScale(data){
@@ -200,7 +207,7 @@
             .attr("height", chartInnerHeight)
             .attr("transform", translate);
 
-        //set bars for each province
+        //set bars for each region
         var bars = chart.selectAll(".bar")
             .data(csvData)
             .enter()
@@ -219,12 +226,7 @@
                 dehighlight(d);
             })
             .on("mousemove", moveLabel);
-         
-        
-        //add style descriptor to each rect
-        var desc = bars.append("desc")
-        .text('{"stroke": "none", "stroke-width": "0px"}');
-        
+                    
         //create a text element for the chart title
         var chartTitle = chart.append("text")
             .attr("x", 40)
@@ -249,12 +251,17 @@
             .attr("height", chartInnerHeight)
             .attr("transform", translate);
         
+        //add style descriptor to each rect
+        var desc = bars.append("desc")
+        .text('{"stroke": "none", "stroke-width": "0px"}');
+        
         //set bar positions, heights, and colors
         updateChart(bars, csvData.length, colorScale);
+        
 }; //end of setChart()
     
     //function to create a dropdown menu for attribute selection
-    function createDropdown(){
+    function createDropdown(csvData){
         //add select element
         var dropdown = d3.select("body")
             .append("select")
@@ -274,8 +281,12 @@
             .data(attrArray)
             .enter()
             .append("option")
-            .attr("value", function(d){ return d })
-            .text(function(d){ return d });
+            .attr("value", function(d) {
+                  return d
+            })
+            .text(function(d){
+                return d
+            });
     };  
     
     //dropdown change event handler
@@ -310,10 +321,6 @@
         })
         .duration(500);
                
-        //add style descriptor to each path
-        var desc = regions.append("desc")
-        .text('{"stroke": "#000", "stroke-width": "0.5px"}');
-        
         updateChart(bars, csvData.length, colorScale);
 }; //end of changeAttribute()
    
