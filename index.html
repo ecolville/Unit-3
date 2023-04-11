@@ -1,18 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width">
-            <title></title>
+       <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>GEOG 575 Lab 2: Food Insecurity in the United States</title>
+        <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
+       
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
 
-        <!--put your external stylesheet links here-->
+        <!--map and chart CSS-->
         <link rel="stylesheet" href="css/style.css">
                 
     </head>
 
-    <body>
-        <!--put your initial page content here-->
+    <body id="page-top">
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+            <div class="container px-4">
+                <a class="navbar-brand" href="#page-top">Hunger in America</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="#HungerFacts">Hunger Facts</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#FoodInsecurity">What is Food Insecurity?</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#Map">Interactive Map</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Hunger Facts section-->
+        <section id="HungerFacts">
+            <div class="container px-4">
+                <div class="row gx-4 justify-content-center">
+                    <div class="col-lg-8">
+                        <h2>Hunger Facts</h2>
+                        <p class="lead">Hunger can affect people from all walks of life. Millions of people in America are just one job loss, missed paycheck, or medical emergency away from hunger. But hunger doesn't affect everyone equally - some groups like children, seniors, Black, Indigenous, and other people of color face hunger much higher rates. Hunger also most often affects our neighbors who live in poverty.</p>
+                        <ul>
+                            <li>According to the USDA, more than 34 million people, including 9 million children, in the United States are food insecure</li>
+                            <li>The pandemic has increased food insecurity among families with children and communities of color, who already faced hunger at much higher rates before the pandemic.</li>
+                            <li>Every community in the country is home to families who face hunger. But rural communities are especially hard hit by hunger.</li>
+                            <li>Many households that experience food insecurity do not qualify for federal nutrition programs and visit their local food banks and other food programs for extra support.</li>
+                            <li>Hunger in African American, Latino, and  Native American communities is higher because of systemic racial injustice. To achieve a hunger-free America, we must address the root causes of hunger and structural and systemic inequities.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- What is food insecurity? section-->
+        <section class="bg-light" id="FoodInsecurity">
+            <div class="container px-4">
+                <div class="row gx-4 justify-content-center">
+                    <div class="col-lg-8">
+                        <h2>What is food insecurity?</h2>
+                        <p class="lead">Food security is a federal measure of a household’s ability to provide enough food for every person in the household to have an active, healthy life. Food insecurity is one way we can measure the risk of hunger.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+         <!-- Interactive Map section-->
+        <section id="Map">
+            <div class="row">
+                <div class="col-med-8"> 
+                  <div class="map-container">
+                        <h2 class = "mapTitle"></h2>
+                      <div class="map"></div>
+                    </div>
+                </div>
+                <div class="col-med-4">
+                    <div class = "dropdown">
+                        <h4>Can I put the dropdown and infolabel in this column so that the layout is less wonky?</h4>
+                        <div class="dropdown">                
+                        </div>
+                </div>
+            </div>
+            </section>
+       
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container px-4"><p class="m-0 text-center text-white">Copyright &copy; Lisa Siewert 2023</p></div>
+        </footer>
 
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
         
         <!--D3.js and main.js-->
         <script type="text/javascript" src="lib/d3.js"></script>

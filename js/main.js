@@ -6,20 +6,19 @@
 	var expressed = attrArray[0]; //initial attribute
 
     //chart frame dimensions
-        var chartWidth = window.innerWidth * 0.425,
-            chartHeight = 523,
-            leftPadding = 25,
-            rightPadding = 2,
-            topBottomPadding = 5,
+        var chartWidth = window.innerWidth,
+            chartHeight = 300,
+            leftPadding = 100,
+            rightPadding = 25,
+            topBottomPadding = 2,
             chartInnerWidth = chartWidth - leftPadding - rightPadding,
             chartInnerHeight = chartHeight - topBottomPadding * 2,
             translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
     
      //create a scale to size bars proportionally to frame and for axis
         var yScale = d3.scaleLinear()
-            .range([0, 563])
-            .domain([30, 0]);
-    
+            .range([0, 290])
+            .domain([34, 0]);
     
     //begin script when window loads
     window.onload = setMap();
@@ -27,18 +26,20 @@
     //set up choropleth map
     function setMap() {
         //map frame dimensions
-        var width = window.innerWidth * 0.5,
-            height = 510;
+        var width = window.innerWidth-100,
+            height = 570;
 
         //create new svg container for the map
-        var map = d3.select("body")
+        var map = d3.select("#Map")
             .append("svg")
             .attr("class", "map")
             .attr("width", width)
             .attr("height", height);
     
         //create US-centric composite projection of three Albers equal area conic projections...does the hard work of including AK and HI for me!
-        var projection = d3.geoAlbersUsa();
+        var projection = d3.geoAlbersUsa()
+            .scale(1150)
+            .translate([width/2, height/2]);
             
         //create a path generator
         var path = d3.geoPath().projection(projection);
@@ -74,6 +75,7 @@
             createDropdown(csvData)
             
             }; //end of callback(data)
+    
 	}; //end of setMap()
     
     function joinData(usStatesJson, csvData){
@@ -85,7 +87,7 @@
 	            //loop through geojson state to find correct state
 	            for (var a=0; a<usStatesJson.length; a++){
 
-	                var geojsonProps = usStatesJson[a].properties; //the current region geojson properties
+	                var geojsonProps = usStatesJson[a].properties; //the current state geojson properties
 	                var geojsonKey = geojsonProps.diss_me; //the geojson primary key
 
 	                //where primary keys match, transfer csv data to geojson properties object
@@ -109,8 +111,8 @@
             .enter()
             .append("path")
             .attr("class", function(d){
-                return "states " + d.properties.diss_me; 
-            }) //generic class of states created, then assign unique class based on the diss_me attribute, which is the key between the csv and json data
+                return "states state_" + d.properties.diss_me; 
+            }) //generic class of states created, then assign unique class based on the states_diss_me attribute, which is the key between the csv and json data
         .attr("d", path) //draw state geometry
         .style("fill", function(d){            
                 var value = d.properties[expressed];            
@@ -153,12 +155,12 @@
     function setChart(csvData, colorScale){
         
         //create a second svg element to hold the bar chart
-        var chart = d3.select("body")
+        var chart = d3.select("#Map")
             .append("svg")
             .attr("width", chartWidth)
             .attr("height", chartHeight)
             .attr("class", "chart");
-
+        
         //create a rectangle for chart background fill
         var chartBackground = chart.append("rect")
             .attr("class", "chartBackground")
@@ -166,7 +168,7 @@
             .attr("height", chartInnerHeight)
             .attr("transform", translate);
 
-        //set bars for each state
+       //set bars for each state
         var bars = chart.selectAll(".bar")
             .data(csvData)
             .enter()
@@ -175,48 +177,32 @@
                 return parseFloat(b[expressed]) - parseFloat(a[expressed])
             })
             .attr("class", function(d){
-                return "bar " + d.diss_me;
+                return "bar state_" + d.diss_me;
             })
-            .attr("width", chartInnerWidth / csvData.length - 1)
+            .attr("width", chartInnerWidth / csvData.length - 1) 
             .on("mouseover", function(event, d){
                 highlight(d);
             })
-            .on("mouseover", function(event, d){
+            .on("mouseout", function(event, d){
                 dehighlight(d);
             })
             .on("mousemove", moveLabel);
                
-        //create a text element for the chart title
-        var chartTitle = chart.append("text")
-            .attr("x", 40)
-            .attr("y", 40)
-            .attr("class", "chartTitle")
-            //.text(expressed.split("_")[5] + ":" + expressed.split("_")[0] + " " + expressed.split("_")[1] + " " + expressed.split("_")[2] + " " + expressed.split("_")[3] + " " + expressed.split("_")[4]);
-
-        //create frame for chart border
-        var chartFrame = chart.append("rect")
-            .attr("class", "chartFrame")
-            .attr("width", chartInnerWidth)
-            .attr("height", chartInnerHeight)
-            .attr("transform", translate);
-        
         //create vertical axis generator
         var yAxis = d3.axisLeft()
             .scale(yScale);
+        
+       // var xAxis = d3.axisBottom()
+            //.range([0, chartInnerWidth])
+        //chart.append("g")
+            //.attr("class", "axis")
 
         //place axis
         var axis = chart.append("g")
             .attr("class", "axis")
             .attr("transform", translate)
-            .call(yAxis);
-
-        //create frame for chart border
-        var chartFrame = chart.append("rect")
-            .attr("class", "chartFrame")
-            .attr("width", chartInnerWidth)
-            .attr("height", chartInnerHeight)
-            .attr("transform", translate);
-        
+            .call(yAxis)
+            
         //add style descriptor to each rect
         var desc = bars.append("desc")
         .text('{"stroke": "none", "stroke-width": "0px"}');
@@ -229,7 +215,7 @@
     //function to create a dropdown menu for attribute selection
     function createDropdown(csvData){
         //add select element
-        var dropdown = d3.select("body")
+        var dropdown = d3.select("#Map")
             .append("select")
             .attr("class", "dropdown")
             .on("change", function () {
@@ -299,7 +285,7 @@
         })
             //size/resize bars
             .attr("height", function (d, i) {
-                return 523 - yScale(parseFloat(d[expressed]));
+                return 293 - yScale(parseFloat(d[expressed]));
             })
             .attr("y", function (d, i) {
                 return yScale(parseFloat(d[expressed])) + topBottomPadding;
@@ -314,24 +300,24 @@
                 }
             });
         
-        //add text to chart title
-        var chartTitle = d3.select(".chartTitle")
-             .text(expressed.split("_")[5] + ":" + expressed.split("_")[0] + " " + expressed.split("_")[1] + " " + expressed.split("_")[2] + " " + expressed.split("_")[3] + " " + expressed.split("_")[4]);
+        //add text to map title
+        var mapTitle = d3.select(".mapTitle")
+             .text(expressed.split("_")[5] + ": " + expressed.split("_")[0] + " " + expressed.split("_")[1] + " " + expressed.split("_")[2] + " " + expressed.split("_")[3] + " " + expressed.split("_")[4]);
     }
 
     //function to highlight enumeration units and bars
     function highlight(props) {
         //change stroke
         var selected = d3
-            .selectAll("." + props.diss_me)
-            .style("stroke", "blue")
+            .selectAll(".state_" + props.diss_me)
+            .style("stroke", "black")
             .style("stroke-width", "2");
         setLabel(props);
     }
 
     //function to reset the element style on mouseout
     function dehighlight(props) {
-        var selected = d3.selectAll("." + props.diss_me)
+        var selected = d3.selectAll(".state_" + props.diss_me)
             .style("stroke", function () {
                 return getStyle(this, "stroke");
             })
@@ -339,7 +325,10 @@
                 return getStyle(this, "stroke-width");
             })
             .on("mouseover", function(event, d){
-                highlight(d.properties);
+                highlight(d.properties)
+                .select(this).transition()
+                .duration('50')
+                .attr('opacity', '0.5');
             })
             .on("mouseout", function(event, d){
                 dehighlight(d.properties);
@@ -366,13 +355,13 @@
             "</h1><b>" + expressed + "</b>";
 
         //create info label div
-        var infolabel = d3.select("body")
+        var infolabel = d3.select("#.MapPanel")
             .append("div")
             .attr("class", "infolabel")
             .attr("id", props.diss_me + "_label")
             .html(labelAttribute);
 
-        var regionName = infolabel.append("div")
+        var stateName = infolabel.append("div")
             .attr("class", "labelname")
             .html(props.name);
     };
