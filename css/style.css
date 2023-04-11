@@ -21,14 +21,9 @@
     fill: #D5E3FF;
 }
 
-.map {
+Map.map {
     margin: 10px 0 0 20px;
     }
-
-.chart {
-    float: right;
-    margin: 7px 20px 0 0;
-}
 
 .regions {
     stroke: #000;
@@ -42,11 +37,11 @@
 }
 
 .mapTitle {
-   text-align: center;
+   text-align: center
 }
 
 .chartBackground {
-    fill: rgba(128,128,128,.2);
+    fill: rgba(128,128,128,.18);
 }
 
 .chartFrame {
@@ -70,6 +65,16 @@
     fill: #999;
 }
 
+.dropdown {
+    position: relative;
+    font-family: sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    padding: 5px;
+    border: 1px solid #999;
+    box-shadow: 2px 2px 4px #999;
+}
+
 Map.infolabel {
     position: absolute;
     height: 50px;
@@ -83,8 +88,5 @@ Map.infolabel {
 Map.infolabel h1 {
     margin: 0 20px 0 0;
     padding: 0;
-    display: inline-block;
     line-height: 1em;
 }
-
-

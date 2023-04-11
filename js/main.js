@@ -6,19 +6,19 @@
 	var expressed = attrArray[0]; //initial attribute
 
     //chart frame dimensions
-        var chartWidth = window.innerWidth,
-            chartHeight = 300,
-            leftPadding = 100,
-            rightPadding = 25,
-            topBottomPadding = 2,
+        var chartWidth = window.innerWidth * 0.5,
+            chartHeight = 373,
+            leftPadding = 25,
+            rightPadding = 2,
+            topBottomPadding = 5,
             chartInnerWidth = chartWidth - leftPadding - rightPadding,
             chartInnerHeight = chartHeight - topBottomPadding * 2,
             translate = "translate(" + leftPadding + "," + topBottomPadding + ")";
     
      //create a scale to size bars proportionally to frame and for axis
         var yScale = d3.scaleLinear()
-            .range([0, 290])
-            .domain([34, 0]);
+            .range([0, 363])
+            .domain([35, 0]);
     
     //begin script when window loads
     window.onload = setMap();
@@ -26,8 +26,8 @@
     //set up choropleth map
     function setMap() {
         //map frame dimensions
-        var width = window.innerWidth-100,
-            height = 570;
+        var width = window.innerWidth *0.425,
+            height = 460;
 
         //create new svg container for the map
         var map = d3.select("#Map")
@@ -38,7 +38,7 @@
     
         //create US-centric composite projection of three Albers equal area conic projections...does the hard work of including AK and HI for me!
         var projection = d3.geoAlbersUsa()
-            .scale(1150)
+            .scale(800)
             .translate([width/2, height/2]);
             
         //create a path generator
@@ -205,7 +205,7 @@
             
         //add style descriptor to each rect
         var desc = bars.append("desc")
-        .text('{"stroke": "none", "stroke-width": "0px"}');
+        .text('{"stroke": "000", "stroke-width": "0px"}');
         
         //set bar positions, heights, and colors
         updateChart(bars, csvData.length, colorScale);
@@ -285,7 +285,7 @@
         })
             //size/resize bars
             .attr("height", function (d, i) {
-                return 293 - yScale(parseFloat(d[expressed]));
+                return 363 - yScale(parseFloat(d[expressed]));
             })
             .attr("y", function (d, i) {
                 return yScale(parseFloat(d[expressed])) + topBottomPadding;
@@ -311,7 +311,7 @@
         var selected = d3
             .selectAll(".state_" + props.diss_me)
             .style("stroke", "black")
-            .style("stroke-width", "2");
+            .style("stroke-width", "2.5");
         setLabel(props);
     }
 
@@ -326,9 +326,6 @@
             })
             .on("mouseover", function(event, d){
                 highlight(d.properties)
-                .select(this).transition()
-                .duration('50')
-                .attr('opacity', '0.5');
             })
             .on("mouseout", function(event, d){
                 dehighlight(d.properties);
@@ -352,13 +349,13 @@
     function setLabel(props) {
         //label content
         var labelAttribute = "<h1>" + props[expressed] + 
-            "</h1><b>" + expressed + "</b>";
+            "</h1><b>" + "</b>";
 
         //create info label div
-        var infolabel = d3.select("#.MapPanel")
+        var infolabel = d3.select("#Map")
             .append("div")
             .attr("class", "infolabel")
-            .attr("id", props.diss_me + "_label")
+            .attr("id", props.State_Name + "_label")
             .html(labelAttribute);
 
         var stateName = infolabel.append("div")
