@@ -73,6 +73,7 @@ Map.map {
     padding: 5px;
     border: 1px solid #999;
     box-shadow: 2px 2px 4px #999;
+    margin: 20px
 }
 
 Map.infolabel {
@@ -86,7 +87,7 @@ Map.infolabel {
 }
 
 Map.infolabel h1 {
-    margin: 0 20px 0 0;
+    margin: 20px;
     padding: 0;
     line-height: 1em;
 }
